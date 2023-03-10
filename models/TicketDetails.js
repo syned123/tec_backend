@@ -1,30 +1,22 @@
 const { Schema, model } = require("mongoose");
-
-const UsuarioSchema = Schema({
-  name: {
+const TicketDetailSchema = Schema({
+  ticket: {
     type: String,
     required: true,
   },
-  lastname: {
+  templateDetail: {
     type: String,
     required: true,
   },
-  email: {
+  value: {
     type: String,
     required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  rol: {
-    type: String,
   },
 });
-UsuarioSchema.method("toJSON", function () {
+
+TicketDetailSchema.method("toJSON", function () {
   const { __v, _id, ...object } = this.toObject();
   object.id = _id;
   return object;
 });
-
-module.exports = model("Usuario", UsuarioSchema);
+module.exports = model("TicketDetail", TicketDetailSchema);

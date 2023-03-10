@@ -4,14 +4,16 @@ const {
   postTicket,
   updateTicket,
   deleteTicket,
+  getTicketId,
 } = require("../controllers/ticket");
 const router = Router();
 const { validarCampos } = require("../middlewares/validar-campos");
 const { validarJWT } = require("../middlewares/validar-jwt");
 
 router.use(validarJWT);
-router.get("/getTicket", getTicket);
-router.post("/postTicket", [validarCampos], postTicket);
-router.put("/updateTicket/:id", updateTicket);
-router.delete("/deleteTicket/:id", deleteTicket);
+router.get("/", getTicket);
+router.post("/",  postTicket);
+router.get("/:id", getTicketId)
+router.put("/:id", updateTicket);
+router.delete("/:id", deleteTicket);
 module.exports = router;

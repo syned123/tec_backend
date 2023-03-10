@@ -9,9 +9,11 @@ const validarJWT = (req, res = response, next) => {
     });
   }
   try {
-    const { uid, name } = jwt.verify(token, "tecnogenia");
+    const { uid, name, lastname, rol } = jwt.verify(token, "tecnogenia");
     req.uid = uid;
     req.name = name;
+    req.lastname = lastname;
+    req.rol = rol;
   } catch (error) {
     return res.status(401).json({
       ok: false,

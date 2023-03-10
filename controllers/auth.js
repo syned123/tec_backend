@@ -21,12 +21,18 @@ const crearUsuario = async (req, res = response) => {
     usuario.password = bcrypt.hashSync(password, salt);
 
     await usuario.save();
-    const token = await generarJWT(usuario.id, usuario.name);
+    const token = await generarJWT(
+      usuario.id,
+      usuario.name,
+      usuario.lastname,
+      usuario.rol
+    );
     return res.status(201).json({
       ok: true,
       id: usuario.id,
       name: usuario.name,
       lastname: usuario.lastname,
+      rol: usuario.rol,
       token,
     });
   } catch (error) {
@@ -53,14 +59,21 @@ const loginUsuario = async (req, res = response) => {
     if (!validPassword) {
       return res.status(400).json({
         ok: false,
-        msg: "Password incorrecto",
+        msg: "Contraseña incorrecta",
       });
     }
-    const token = await generarJWT(usuario.id, usuario.name);
+    const token = await generarJWT(
+      usuario.id,
+      usuario.name,
+      usuario.lastname,
+      usuario.rol
+    );
     res.json({
       ok: true,
       id: usuario.id,
       name: usuario.name,
+      lastname: usuario.lastname,
+      rol: usuario.rol,
       token,
     });
   } catch (error) {
@@ -72,12 +85,15 @@ const loginUsuario = async (req, res = response) => {
   }
 };
 const revalidarToken = async (req, res = response) => {
-  const { id, name } = req;
-  const token = await generarJWT(id, name);
+  console.log(req.lastname);
+  const { id, name, lastname, rol } = req;
+  const token = await generarJWT(id, name, lastname, rol);
   res.json({
     ok: true,
     id,
     name,
+    lastname,
+    rol,
     token,
   });
 };
@@ -116,7 +132,7 @@ const putUser = async (req, res = response) => {
     });
   }
 };
-const deleteUser = async(req, res = response) => {
+const deleteUser = async (req, res = response) => {
   const userId = req.params.id;
   try {
     const user = await Usuario.findById(userId);

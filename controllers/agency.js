@@ -32,7 +32,7 @@ const postAgency = async (req, res = response) => {
   const agency = new Agency(req.body);
   try {
     const agencySave = await agency.save();
-    res.json({
+    return res.json({
       ok: true,
       agency: agencySave,
     });
